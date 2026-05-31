@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Produzir sem Destruir | Agronegócio Sustentável</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --verde-escuro: #2E7D32;
+    --verde-medio: #388E3C;
+    --verde-claro: #81C784;
+    --verde-menta: #A5D6A7;
+    --bege: #F5F5DC;
+    --bege-escuro: #EDE8C8;
+    --azul: #4FC3F7;
+    --azul-escuro: #0277BD;
+    --branco: #FFFFFF;
+    --texto: #1B2E1C;
+    --texto-claro: #4A5C4B;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bege);
+    color: var(--texto);
+    overflow-x: hidden;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 100;
+    padding: 1rem 2rem;
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(46,125,50,0.92);
+    backdrop-filter: blur(12px);
+    transition: all 0.3s;
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    color: var(--branco); font-size: 1.2rem; font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+  .nav-logo span { color: var(--verde-claro); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    color: rgba(255,255,255,0.85); text-decoration: none;
+    font-size: 0.9rem; font-weight: 500; letter-spacing: 0.03em;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--verde-claro); }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    background: linear-gradient(160deg, #1B3A1C 0%, #2E7D32 45%, #1565C0 100%);
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    text-align: center; padding: 6rem 2rem 4rem;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 110%, rgba(129,199,132,0.18) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 40% at 20% 30%, rgba(79,195,247,0.10) 0%, transparent 60%);
+  }
+  .hero-scene {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 220px;
+    overflow: hidden;
+  }
+  /* SVG landscape */
+  .floating-leaf {
+    position: absolute;
+    animation: floatLeaf 8s ease-in-out infinite;
+    opacity: 0.18;
+  }
+  .floating-leaf:nth-child(2) { animation-delay: -3s; right: 15%; top: 20%; }
+  .floating-leaf:nth-child(3) { animation-delay: -6s; left: 10%; top: 40%; }
+  @keyframes floatLeaf {
+    0%,100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(8deg); }
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(129,199,132,0.2);
+    border: 1px solid rgba(129,199,132,0.5);
+    color: var(--verde-claro);
+    font-size: 0.78rem; font-weight: 500; letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.4rem 1.2rem; border-radius: 100px;
+    margin-bottom: 1.5rem;
+    animation: fadeSlideUp 0.8s ease both;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.4rem, 6vw, 4.5rem);
+    font-weight: 900; line-height: 1.1;
+    color: var(--branco);
+    max-width: 780px;
+    margin-bottom: 1.5rem;
+    animation: fadeSlideUp 0.8s 0.15s ease both;
+  }
+  .hero h1 em { color: var(--verde-claro); font-style: normal; }
+  .hero p {
+    font-size: 1.15rem; color: rgba(255,255,255,0.78);
+    max-width: 560px; line-height: 1.7;
+    margin-bottom: 2.5rem;
+    animation: fadeSlideUp 0.8s 0.3s ease both;
+  }
+  .btn-hero {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    background: var(--verde-claro);
+    color: var(--texto); font-weight: 600; font-size: 1rem;
+    padding: 1rem 2.2rem; border-radius: 100px;
+    text-decoration: none; border: none; cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    animation: fadeSlideUp 0.8s 0.45s ease both;
+  }
+  .btn-hero:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,0.25); }
+  .btn-hero svg { transition: transform 0.2s; }
+  .btn-hero:hover svg { transform: translateX(4px); }
+  @keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(28px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .scroll-indicator {
+    position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+    color: rgba(255,255,255,0.5); font-size: 0.75rem; letter-spacing: 0.1em;
+    animation: bounce 2s ease-in-out infinite;
+  }
+  @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(6px)} }
+
+  /* ─── SECTIONS ─── */
+  section { padding: 5rem 2rem; }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .section-label {
+    display: inline-block;
+    color: var(--verde-escuro); font-size: 0.75rem;
+    font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase;
+    margin-bottom: 0.8rem;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-weight: 800; line-height: 1.2;
+    color: var(--texto);
+    margin-bottom: 1.2rem;
+  }
+  .section-title em { color: var(--verde-escuro); font-style: normal; }
+  .section-subtitle {
+    color: var(--texto-claro); font-size: 1.05rem; line-height: 1.7;
+    max-width: 600px;
+  }
+
+  /* ─── SEÇÃO 1: DESAFIO ─── */
+  .desafio {
+    background: var(--branco);
+    border-radius: 0;
+  }
+  .desafio-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
+    align-items: center; margin-top: 3rem;
+  }
+  .desafio-text p { color: var(--texto-claro); line-height: 1.8; margin-bottom: 1rem; }
+  .stat-row { display: flex; gap: 1.5rem; margin-top: 2rem; }
+  .stat-card {
+    flex: 1; background: var(--bege); border-radius: 16px; padding: 1.5rem;
+    border-left: 4px solid var(--verde-escuro);
+  }
+  .stat-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem; font-weight: 900; color: var(--verde-escuro);
+    line-height: 1;
+  }
+  .stat-label { font-size: 0.85rem; color: var(--texto-claro); margin-top: 0.3rem; }
+
+  /* Animação população */
+  .anim-container {
+    background: linear-gradient(135deg, #E8F5E9, #E3F2FD);
+    border-radius: 24px; padding: 2rem;
+    display: flex; flex-direction: column; gap: 1.5rem;
+  }
+  .anim-bar-label {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.85rem; font-weight: 500; color: var(--texto-claro);
+    margin-bottom: 0.5rem;
+  }
+  .anim-bar-track {
+    height: 12px; background: rgba(0,0,0,0.07); border-radius: 100px; overflow: hidden;
+  }
+  .anim-bar-fill {
+    height: 100%; border-radius: 100px;
+    width: 0; transition: width 1.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .anim-bar-fill.pop { background: linear-gradient(90deg, var(--verde-escuro), var(--verde-claro)); }
+  .anim-bar-fill.food { background: linear-gradient(90deg, var(--azul-escuro), var(--azul)); }
+  .anim-bar-fill.forest { background: linear-gradient(90deg, #4CAF50, #AED581); }
+  .anim-bar-year {
+    font-size: 0.72rem; color: var(--texto-claro); letter-spacing: 0.05em;
+  }
+
+  /* ─── SEÇÃO 2: SOLUÇÕES ─── */
+  .solucoes { background: var(--bege-escuro); }
+  .cards-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem; margin-top: 3rem;
+  }
+  .solution-card {
+    background: var(--branco); border-radius: 20px; padding: 2rem;
+    border: 1px solid rgba(46,125,50,0.1);
+    transition: transform 0.25s, box-shadow 0.25s;
+    cursor: default;
+    position: relative; overflow: hidden;
+  }
+  .solution-card::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--verde-escuro), var(--verde-claro));
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.3s;
+  }
+  .solution-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(46,125,50,0.12); }
+  .solution-card:hover::after { transform: scaleX(1); }
+  .card-icon {
+    width: 52px; height: 52px; border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.6rem; margin-bottom: 1.2rem;
+  }
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem; font-weight: 700; margin-bottom: 0.6rem;
+  }
+  .card-desc { font-size: 0.9rem; color: var(--texto-claro); line-height: 1.6; }
+
+  /* ─── SEÇÃO 3: NATUREZA ─── */
+  .natureza { background: var(--verde-escuro); color: var(--branco); }
+  .natureza .section-label { color: var(--verde-claro); }
+  .natureza .section-title { color: var(--branco); }
+  .natureza .section-subtitle { color: rgba(255,255,255,0.7); }
+  .benefits-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.5rem; margin-top: 3rem;
+  }
+  .benefit-item {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 16px; padding: 1.5rem;
+    text-align: center;
+    transition: background 0.25s, transform 0.25s;
+  }
+  .benefit-item:hover { background: rgba(255,255,255,0.14); transform: translateY(-4px); }
+  .benefit-icon { font-size: 2rem; margin-bottom: 0.8rem; }
+  .benefit-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 0.3rem; }
+  .benefit-desc { font-size: 0.8rem; color: rgba(255,255,255,0.6); line-height: 1.5; }
+
+  /* ─── SEÇÃO 4: FAZENDA INTERATIVA ─── */
+  .fazenda { background: var(--branco); }
+  .fazenda-wrap { margin-top: 3rem; position: relative; }
+  .farm-scene {
+    width: 100%; border-radius: 24px; overflow: hidden;
+    position: relative; background: linear-gradient(180deg, #87CEEB 0%, #B0E0E6 35%, #90EE90 35%, #228B22 100%);
+    height: 420px; cursor: crosshair;
+  }
+  /* SVG farm hotspots */
+  .hotspot {
+    position: absolute; z-index: 10;
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+    cursor: pointer; transition: transform 0.2s;
+  }
+  .hotspot:hover { transform: scale(1.12); }
+  .hotspot-btn {
+    width: 52px; height: 52px; border-radius: 50%;
+    background: rgba(255,255,255,0.9);
+    border: 3px solid var(--verde-escuro);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    transition: background 0.2s, border-color 0.2s;
+    animation: pulse 2.5s ease-in-out infinite;
+  }
+  .hotspot:hover .hotspot-btn { background: var(--verde-claro); }
+  @keyframes pulse {
+    0%,100% { box-shadow: 0 0 0 0 rgba(46,125,50,0.4); }
+    50% { box-shadow: 0 0 0 10px rgba(46,125,50,0); }
+  }
+  .hotspot-label {
+    background: rgba(46,125,50,0.9);
+    color: #fff; font-size: 0.7rem; font-weight: 600;
+    padding: 2px 8px; border-radius: 100px; white-space: nowrap;
+    opacity: 0; transform: translateY(4px);
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .hotspot:hover .hotspot-label { opacity: 1; transform: translateY(0); }
+  /* positions */
+  .hs-trator  { left: 20%; top: 55%; }
+  .hs-mata    { right: 12%; top: 38%; }
+  .hs-lago    { left: 45%; top: 62%; }
+  .hs-solar   { left: 65%; top: 50%; }
+  .hs-abelha  { left: 30%; top: 38%; }
+
+  /* Tooltip */
+  .farm-tooltip {
+    position: absolute; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+    background: rgba(27,46,28,0.95);
+    color: #fff; padding: 1rem 1.5rem;
+    border-radius: 16px; max-width: 360px; width: 90%;
+    text-align: center; pointer-events: none;
+    opacity: 0; transition: opacity 0.3s;
+    font-size: 0.9rem; line-height: 1.6;
+    border: 1px solid rgba(129,199,132,0.3);
+    backdrop-filter: blur(8px);
+  }
+  .farm-tooltip.visible { opacity: 1; }
+  .farm-tooltip strong { color: var(--verde-claro); font-size: 1rem; display: block; margin-bottom: 0.3rem; }
+
+  /* SVG decorations inside farm */
+  .farm-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+  /* ─── SEÇÃO 5: VOCÊ SABIA ─── */
+  .voce-sabia { background: linear-gradient(135deg, #F1F8E9, #E3F2FD); }
+  .facts-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem; margin-top: 3rem;
+  }
+  .fact-card {
+    background: var(--branco); border-radius: 20px; padding: 2rem;
+    border-top: 4px solid var(--verde-escuro);
+    transition: transform 0.25s;
+  }
+  .fact-card:nth-child(2) { border-top-color: var(--azul); }
+  .fact-card:nth-child(3) { border-top-color: var(--verde-claro); }
+  .fact-card:hover { transform: translateY(-5px); }
+  .fact-emoji { font-size: 2rem; margin-bottom: 1rem; }
+  .fact-text { font-size: 1.05rem; font-weight: 500; line-height: 1.6; margin-bottom: 0.8rem; }
+  .fact-source { font-size: 0.8rem; color: var(--texto-claro); }
+
+  /* ─── CONCLUSÃO ─── */
+  .conclusao {
+    background: linear-gradient(160deg, #1B3A1C 0%, #2E7D32 60%, #1565C0 100%);
+    text-align: center; padding: 6rem 2rem;
+    position: relative; overflow: hidden;
+  }
+  .conclusao::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 70% 60% at 50% 100%, rgba(129,199,132,0.15), transparent);
+  }
+  .conclusao-icon { font-size: 3.5rem; margin-bottom: 1.5rem; }
+  .conclusao h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    color: var(--branco); margin-bottom: 1.5rem; font-weight: 900;
+  }
+  .conclusao p {
+    color: rgba(255,255,255,0.8); font-size: 1.1rem; line-height: 1.8;
+    max-width: 700px; margin: 0 auto 2.5rem;
+  }
+  .conclusao-chips { display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap; }
+  .chip {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.9);
+    padding: 0.5rem 1.2rem; border-radius: 100px; font-size: 0.85rem;
+    font-weight: 500;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: #0D1F0E; color: rgba(255,255,255,0.5);
+    text-align: center; padding: 1.5rem;
+    font-size: 0.8rem;
+  }
+  footer span { color: var(--verde-claro); }
+
+  /* ─── REVEAL ─── */
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 768px) {
+    .desafio-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .stat-row { flex-direction: column; }
+    nav .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Agro<span>Sustentável</span></div>
+  <ul class="nav-links">
+    <li><a href="#desafio">O Desafio</a></li>
+    <li><a href="#solucoes">Soluções</a></li>
+    <li><a href="#natureza">Natureza</a></li>
+    <li><a href="#fazenda">Fazenda</a></li>
+    <li><a href="#conclusao">Conclusão</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="floating-leaf">🌿</div>
+  <div class="floating-leaf">🍃</div>
+  <div class="hero-scene">
+    <svg class="farm-svg" viewBox="0 0 1200 220" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="hillGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#2E7D32"/>
+          <stop offset="100%" stop-color="#1B3A1C"/>
+        </linearGradient>
+      </defs>
+      <ellipse cx="200" cy="220" rx="280" ry="80" fill="url(#hillGrad)" opacity="0.9"/>
+      <ellipse cx="700" cy="230" rx="400" ry="90" fill="#388E3C" opacity="0.8"/>
+      <ellipse cx="1100" cy="220" rx="250" ry="70" fill="#2E7D32" opacity="0.95"/>
+      <!-- Trees -->
+      <rect x="120" y="130" width="8" height="50" fill="#1B5E20" rx="4"/>
+      <ellipse cx="124" cy="118" rx="18" ry="22" fill="#2E7D32"/>
+      <rect x="320" y="145" width="8" height="40" fill="#1B5E20" rx="4"/>
+      <ellipse cx="324" cy="134" rx="15" ry="18" fill="#388E3C"/>
+      <rect x="900" y="140" width="8" height="45" fill="#1B5E20" rx="4"/>
+      <ellipse cx="904" cy="128" rx="17" ry="20" fill="#2E7D32"/>
+      <rect x="1050" y="148" width="8" height="38" fill="#1B5E20" rx="4"/>
+      <ellipse cx="1054" cy="138" rx="14" ry="17" fill="#388E3C"/>
+      <!-- Field rows -->
+      <path d="M 500 200 Q 700 185 900 200" stroke="#81C784" stroke-width="3" fill="none" opacity="0.5"/>
+      <path d="M 480 210 Q 700 195 920 210" stroke="#81C784" stroke-width="2" fill="none" opacity="0.3"/>
+    </svg>
+  </div>
+  <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center">
+    <div class="hero-badge">🌱 Agronegócio do Futuro</div>
+    <h1>Produzir sem destruir: o futuro do <em>campo sustentável</em></h1>
+    <p>Conheça práticas que unem produtividade, tecnologia e preservação ambiental.</p>
+    <a href="#desafio" class="btn-hero">
+      Explorar soluções
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+  </div>
+  <div class="scroll-indicator">
+    <span>scroll</span>
+    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
+  </div>
+</section>
+
+<!-- SEÇÃO 1: DESAFIO -->
+<section class="desafio" id="desafio">
+  <div class="container">
+    <div class="desafio-grid">
+      <div class="desafio-text reveal">
+        <span class="section-label">🌍 O Desafio Global</span>
+        <h2 class="section-title">Mais pessoas.<br><em>Mais responsabilidade.</em></h2>
+        <p>O mundo precisa alimentar uma população crescente — e ao mesmo tempo proteger as florestas, rios e animais que sustentam a vida no planeta.</p>
+        <p>Esse equilíbrio exige inovação, planejamento e um novo olhar sobre o campo. A boa notícia: ele já está acontecendo.</p>
+        <div class="stat-row">
+          <div class="stat-card">
+            <div class="stat-number">10 bi</div>
+            <div class="stat-label">pessoas previstas até 2050</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">70%</div>
+            <div class="stat-label">mais alimentos serão necessários</div>
+          </div>
+        </div>
+      </div>
+      <div class="anim-container reveal" id="animBars">
+        <div>
+          <div class="anim-bar-label">
+            <span>👥 População Mundial</span>
+            <span class="anim-bar-year" id="popYear">2024</span>
+          </div>
+          <div class="anim-bar-track"><div class="anim-bar-fill pop" id="barPop"></div></div>
+        </div>
+        <div>
+          <div class="anim-bar-label">
+            <span>🌾 Demanda por Alimentos</span>
+            <span class="anim-bar-year" id="foodYear">2024</span>
+          </div>
+          <div class="anim-bar-track"><div class="anim-bar-fill food" id="barFood"></div></div>
+        </div>
+        <div>
+          <div class="anim-bar-label">
+            <span>🌳 Cobertura Florestal</span>
+            <span class="anim-bar-year" id="forestYear">protegida</span>
+          </div>
+          <div class="anim-bar-track"><div class="anim-bar-fill forest" id="barForest"></div></div>
+        </div>
+        <p style="font-size:0.78rem;color:var(--texto-claro);margin-top:0.5rem;text-align:center">
+          Com práticas sustentáveis, é possível crescer sem reduzir a cobertura florestal 🌱
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SEÇÃO 2: SOLUÇÕES -->
+<section class="solucoes" id="solucoes">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">🚜 Práticas Modernas</span>
+      <h2 class="section-title">Soluções para um campo <em>mais inteligente</em></h2>
+      <p class="section-subtitle">Tecnologia, natureza e planejamento trabalhando juntos no campo.</p>
+    </div>
+    <div class="cards-grid">
+      <div class="solution-card reveal">
+        <div class="card-icon" style="background:#E8F5E9">🛰️</div>
+        <div class="card-title">Agricultura de Precisão</div>
+        <p class="card-desc">Uso de GPS, drones e sensores para monitorar lavouras e evitar desperdícios de água, fertilizantes e defensivos.</p>
+      </div>
+      <div class="solution-card reveal">
+        <div class="card-icon" style="background:#E3F2FD">💧</div>
+        <div class="card-title">Proteção das Nascentes</div>
+        <p class="card-desc">Manutenção de áreas de preservação permanente ao redor de rios e nascentes, garantindo água limpa para produção e consumo.</p>
+      </div>
+      <div class="solution-card reveal">
+        <div class="card-icon" style="background:#F1F8E9">🌳</div>
+        <div class="card-title">Integração Lavoura-Pecuária-Floresta</div>
+        <p class="card-desc">Área produtiva que compartilha espaço com vegetação nativa, beneficiando solo, clima e biodiversidade.</p>
+      </div>
+      <div class="solution-card reveal">
+        <div class="card-icon" style="background:#FFF9C4">☀️</div>
+        <div class="card-title">Energia Renovável</div>
+        <p class="card-desc">Painéis solares e biomassa substituem combustíveis fósseis, reduzindo emissões e custos no campo.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SEÇÃO 3: NATUREZA -->
+<section class="natureza" id="natureza">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">🐝 Benefícios Ambientais</span>
+      <h2 class="section-title">A natureza <em>também ganha</em></h2>
+      <p class="section-subtitle">Quando o campo produz de forma responsável, o planeta inteiro sai ganhando.</p>
+    </div>
+    <div class="benefits-grid">
+      <div class="benefit-item reveal">
+        <div class="benefit-icon">💧</div>
+        <div class="benefit-title">Água mais limpa</div>
+        <div class="benefit-desc">Rios e aquíferos preservados com menos agrotóxicos.</div>
+      </div>
+      <div class="benefit-item reveal">
+        <div class="benefit-icon">🌱</div>
+        <div class="benefit-title">Solo mais fértil</div>
+        <div class="benefit-desc">Práticas orgânicas mantêm a saúde do solo por gerações.</div>
+      </div>
+      <div class="benefit-item reveal">
+        <div class="benefit-icon">🏔️</div>
+        <div class="benefit-title">Menos erosão</div>
+        <div class="benefit-desc">Cobertura vegetal protege o solo das chuvas.</div>
+      </div>
+      <div class="benefit-item reveal">
+        <div class="benefit-icon">🐝</div>
+        <div class="benefit-title">Polinizadores protegidos</div>
+        <div class="benefit-desc">Abelhas e borboletas essenciais para a produção de alimentos.</div>
+      </div>
+      <div class="benefit-item reveal">
+        <div class="benefit-icon">🦋</div>
+        <div class="benefit-title">Biodiversidade</div>
+        <div class="benefit-desc">Corredores ecológicos preservam espécies nativas.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SEÇÃO 4: FAZENDA INTERATIVA -->
+<section class="fazenda" id="fazenda">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">🗺️ Explore o Campo</span>
+      <h2 class="section-title">Uma fazenda <em>sustentável</em> por dentro</h2>
+      <p class="section-subtitle">Clique nos elementos da fazenda para descobrir como cada um contribui para a sustentabilidade.</p>
+    </div>
+    <div class="fazenda-wrap reveal">
+      <div class="farm-scene" id="farmScene">
+        <!-- SVG background scene -->
+        <svg class="farm-svg" viewBox="0 0 900 420" xmlns="http://www.w3.org/2000/svg">
+          <!-- Sky -->
+          <rect width="900" height="420" fill="#87CEEB"/>
+          <!-- Clouds -->
+          <ellipse cx="150" cy="60" rx="60" ry="22" fill="white" opacity="0.8"/>
+          <ellipse cx="180" cy="50" rx="45" ry="18" fill="white" opacity="0.9"/>
+          <ellipse cx="600" cy="80" rx="50" ry="18" fill="white" opacity="0.7"/>
+          <ellipse cx="640" cy="70" rx="40" ry="15" fill="white" opacity="0.8"/>
+          <!-- Sun -->
+          <circle cx="790" cy="65" r="38" fill="#FDD835" opacity="0.9"/>
+          <circle cx="790" cy="65" r="28" fill="#FFEE58"/>
+          <!-- Ground -->
+          <rect y="200" width="900" height="220" fill="#4CAF50"/>
+          <!-- Field rows (crops) -->
+          <rect y="200" width="900" height="20" fill="#388E3C"/>
+          <path d="M 0 230 Q 450 215 900 230" stroke="#2E7D32" stroke-width="3" fill="none"/>
+          <path d="M 0 255 Q 450 240 900 255" stroke="#2E7D32" stroke-width="3" fill="none"/>
+          <path d="M 0 280 Q 450 265 900 280" stroke="#2E7D32" stroke-width="3" fill="none"/>
+          <!-- Lake -->
+          <ellipse cx="430" cy="330" rx="65" ry="28" fill="#29B6F6" opacity="0.85"/>
+          <ellipse cx="430" cy="328" rx="55" ry="18" fill="#4FC3F7" opacity="0.6"/>
+          <!-- Forest (right side) -->
+          <rect x="700" y="100" width="12" height="120" fill="#2E7D32" rx="6"/>
+          <ellipse cx="706" cy="88" rx="32" ry="38" fill="#388E3C"/>
+          <ellipse cx="706" cy="78" rx="26" ry="30" fill="#2E7D32"/>
+          <rect x="770" y="120" width="10" height="100" fill="#1B5E20" rx="5"/>
+          <ellipse cx="775" cy="108" rx="28" ry="34" fill="#2E7D32"/>
+          <ellipse cx="775" cy="98" rx="22" ry="26" fill="#388E3C"/>
+          <rect x="830" y="130" width="10" height="90" fill="#2E7D32" rx="5"/>
+          <ellipse cx="835" cy="118" rx="24" ry="30" fill="#1B5E20"/>
+          <!-- Farmhouse -->
+          <rect x="80" y="155" width="100" height="60" fill="#D7CCC8" rx="4"/>
+          <polygon points="75,155 185,155 130,110" fill="#8D6E63"/>
+          <rect x="110" y="180" width="22" height="35" fill="#795548"/>
+          <rect x="85" y="163" width="22" height="18" fill="#90CAF9" rx="2"/>
+          <rect x="147" y="163" width="22" height="18" fill="#90CAF9" rx="2"/>
+          <!-- Solar panels -->
+          <rect x="540" y="210" width="70" height="40" fill="#1565C0" rx="4" transform="rotate(-8,575,230)"/>
+          <rect x="543" y="213" width="30" height="16" fill="#1976D2" rx="2" transform="rotate(-8,558,221)"/>
+          <rect x="577" y="213" width="30" height="16" fill="#1976D2" rx="2" transform="rotate(-8,592,221)"/>
+          <rect x="543" y="232" width="30" height="14" fill="#1976D2" rx="2" transform="rotate(-8,558,239)"/>
+          <rect x="577" y="232" width="30" height="14" fill="#1976D2" rx="2" transform="rotate(-8,592,239)"/>
+          <!-- Tractor -->
+          <rect x="240" y="270" width="55" height="35" fill="#FF8F00" rx="6"/>
+          <rect x="240" y="260" width="30" height="18" fill="#FFB300" rx="4"/>
+          <circle cx="255" cy="308" r="14" fill="#212121"/>
+          <circle cx="255" cy="308" r="9" fill="#616161"/>
+          <circle cx="285" cy="308" r="11" fill="#212121"/>
+          <circle cx="285" cy="308" r="7" fill="#616161"/>
+          <!-- Beehive -->
+          <ellipse cx="360" cy="230" rx="18" ry="22" fill="#FFA000"/>
+          <ellipse cx="360" cy="212" rx="14" ry="10" fill="#FFB300"/>
+          <rect x="354" y="248" width="12" height="6" fill="#E65100" rx="2"/>
+          <line x1="345" y1="220" x2="335" y2="210" stroke="#FFA000" stroke-width="2"/>
+          <line x1="375" y1="220" x2="385" y2="210" stroke="#FFA000" stroke-width="2"/>
+        </svg>
+
+        <!-- Hotspots -->
+        <div class="hotspot hs-trator" data-tip="trator">
+          <div class="hotspot-btn">🚜</div>
+          <span class="hotspot-label">Agricultura</span>
+        </div>
+        <div class="hotspot hs-mata" data-tip="mata">
+          <div class="hotspot-btn">🌳</div>
+          <span class="hotspot-label">Mata Nativa</span>
+        </div>
+        <div class="hotspot hs-lago" data-tip="lago">
+          <div class="hotspot-btn">💧</div>
+          <span class="hotspot-label">Proteção Hídrica</span>
+        </div>
+        <div class="hotspot hs-solar" data-tip="solar">
+          <div class="hotspot-btn">☀️</div>
+          <span class="hotspot-label">Energia Solar</span>
+        </div>
+        <div class="hotspot hs-abelha" data-tip="abelha">
+          <div class="hotspot-btn">🐝</div>
+          <span class="hotspot-label">Polinização</span>
+        </div>
+
+        <!-- Tooltip -->
+        <div class="farm-tooltip" id="farmTooltip"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SEÇÃO 5: VOCÊ SABIA -->
+<section class="voce-sabia" id="sabia">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">💡 Você Sabia?</span>
+      <h2 class="section-title">Fatos que <em>surpreendem</em></h2>
+    </div>
+    <div class="facts-grid">
+      <div class="fact-card reveal">
+        <div class="fact-emoji">🐝</div>
+        <div class="fact-text">Mais de <strong>75%</strong> das culturas alimentares do mundo dependem, ao menos em parte, da polinização por animais — especialmente as abelhas.</div>
+        <div class="fact-source">Fonte: FAO / IPBES</div>
+      </div>
+      <div class="fact-card reveal">
+        <div class="fact-emoji">🌳</div>
+        <div class="fact-text">A preservação das matas ciliares é diretamente responsável pela proteção de nascentes e pela qualidade da água consumida nas cidades.</div>
+        <div class="fact-source">Fonte: Código Florestal Brasileiro</div>
+      </div>
+      <div class="fact-card reveal">
+        <div class="fact-emoji">📡</div>
+        <div class="fact-text">A agricultura de precisão pode reduzir o uso de agroquímicos em até <strong>15%</strong> e o consumo de água em até <strong>30%</strong>, sem perda de produtividade.</div>
+        <div class="fact-source">Fonte: Embrapa / USDA</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONCLUSÃO -->
+<section class="conclusao" id="conclusao">
+  <div class="container" style="position:relative;z-index:2">
+    <div class="conclusao-icon reveal">🌎</div>
+    <h2 class="reveal">O campo e a natureza<br>podem caminhar juntos.</h2>
+    <p class="reveal">O agronegócio sustentável demonstra que produzir alimentos e preservar o meio ambiente são objetivos que podem andar lado a lado. Com tecnologia, planejamento e responsabilidade, é possível garantir alimento para as pessoas e um futuro melhor para o planeta.</p>
+    <div class="conclusao-chips reveal">
+      <span class="chip">🌱 Produção Responsável</span>
+      <span class="chip">🤝 Tecnologia & Natureza</span>
+      <span class="chip">💧 Água para o futuro</span>
+      <span class="chip">🐝 Biodiversidade protegida</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Feito com 💚 para o futuro do campo. &nbsp;|&nbsp; <span>Produzir Hoje, Preservar Amanhã</span></p>
+</footer>
+
+<script>
+// ─── REVEAL ON SCROLL ───
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), 80);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12 });
+reveals.forEach(el => observer.observe(el));
+
+// ─── ANIMAÇÃO BARRAS ───
+const barObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      setTimeout(() => {
+        document.getElementById('barPop').style.width = '72%';
+        document.getElementById('barFood').style.width = '85%';
+        document.getElementById('barForest').style.width = '58%';
+        document.getElementById('popYear').textContent = '→ 2050';
+        document.getElementById('foodYear').textContent = '→ 2050';
+        document.getElementById('forestYear').textContent = 'sustentável';
+      }, 400);
+      barObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.3 });
+const animBars = document.getElementById('animBars');
+if (animBars) barObserver.observe(animBars);
+
+// ─── FAZENDA INTERATIVA ───
+const tips = {
+  trator: {
+    icon: '🚜',
+    title: 'Agricultura de Precisão',
+    desc: 'Tratores equipados com GPS e sensores monitoram cada metro da lavoura, aplicando fertilizantes e defensivos apenas onde necessário — reduzindo custos e impacto ambiental.'
+  },
+  mata: {
+    icon: '🌳',
+    title: 'Preservação Ambiental',
+    desc: 'As áreas de mata nativa funcionam como corredores ecológicos, protegendo espécies, regulando o clima local e mantendo o solo saudável.'
+  },
+  lago: {
+    icon: '💧',
+    title: 'Proteção Hídrica',
+    desc: 'Lagos e nascentes são protegidos por faixas de vegetação (matas ciliares). Água limpa no campo significa mais qualidade de vida para todos.'
+  },
+  solar: {
+    icon: '☀️',
+    title: 'Energia Limpa',
+    desc: 'Painéis solares e biomassa substituem combustíveis fósseis na propriedade rural, reduzindo emissões e gerando economia a longo prazo.'
+  },
+  abelha: {
+    icon: '🐝',
+    title: 'Polinização Natural',
+    desc: 'As colmeias nas fazendas garantem a polinização das culturas, essencial para a produção de frutas, legumes e sementes. Proteger as abelhas é proteger nossa comida.'
+  }
+};
+
+const tooltip = document.getElementById('farmTooltip');
+document.querySelectorAll('.hotspot').forEach(hs => {
+  hs.addEventListener('click', () => {
+    const key = hs.dataset.tip;
+    const t = tips[key];
+    tooltip.innerHTML = `<strong>${t.icon} ${t.title}</strong>${t.desc}`;
+    tooltip.classList.add('visible');
+  });
+  hs.addEventListener('mouseenter', () => {
+    const key = hs.dataset.tip;
+    const t = tips[key];
+    tooltip.innerHTML = `<strong>${t.icon} ${t.title}</strong>${t.desc}`;
+    tooltip.classList.add('visible');
+  });
+  hs.addEventListener('mouseleave', () => {
+    tooltip.classList.remove('visible');
+  });
+});
+
+// ─── NAV SHADOW ON SCROLL ───
+window.addEventListener('scroll', () => {
+  document.querySelector('nav').style.boxShadow =
+    window.scrollY > 40 ? '0 4px 24px rgba(0,0,0,0.2)' : 'none';
+});
+</script>
+</body>
+</html>
